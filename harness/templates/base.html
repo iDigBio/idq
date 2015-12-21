@@ -1,0 +1,20 @@
+{%- extends "bootstrap/base.html" %}
+
+{% block title %}Data Quality Front-End{% endblock %}
+
+{% import "bootstrap/fixes.html" as fixes %}
+{% block head %}
+{{super()}}
+{{fixes.ie8()}}
+{%- endblock %}
+
+{% block styles -%}
+    {{super()}}
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='harness.css')}}">
+{% endblock %}
+
+{# Finally, round things out with navigation #}
+{% block navbar %}
+{{nav.top.render()}}
+{% endblock %}

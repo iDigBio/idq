@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+    When using the harness as a JSON API, all requests must specify the Content-Type headers as 'application/json'. It is also possible to script the normal form endpoints, but the response will be HTML, so this is not recommended.<br>
+    <br>
+    Single Endpoint Usage:<br>
+        Curl:<br>
+            <code>
+            curl -X POST http://localhost:5000/single -d '{"dwc:decimalLongitude": 5, "dwc:decimalLatitude": 6}' -H "Content-Type: application/json"
+            </code><br>
+            <code>
+{
+  "dwc:decimalLatitude": 6.0, 
+  "dwc:decimalLongitude": 5.0, 
+  "flags": []
+}
+            </code><br>
+
+    <br>
+    Batch Endpoint Usage:<br>
+        Curl:<br>
+            <code>
+            curl -X POST http://localhost:5000/batch -d '{"items":[{"dwc:decimalLongitude": 5, "dwc:decimalLatitude": 6},{"dwc:decimalLatitude": 5.5,"dwc:decimalLongitude": 7.1}]}' -H "Content-Type: application/json"
+            </code><br>
+            <code>
+{
+  "items": [
+    {
+      "dwc:decimalLatitude": 6.0, 
+      "dwc:decimalLongitude": 5.0, 
+      "flags": []
+    }, 
+    {
+      "dwc:decimalLatitude": 5.5, 
+      "dwc:decimalLongitude": 7.1, 
+      "flags": []
+    }
+  ]
+}
+            </code><br>
+{% endblock %}

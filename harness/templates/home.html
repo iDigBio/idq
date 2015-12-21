@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  Welcome to the Data Quality Harness, you can use the following pages to run the defined workflow:
+
+  <ul>
+    <li><a href="{{ url_for('batch') }}">Process File</a></li>
+    <li><a href="{{ url_for('single') }}">Manual Entry</a></li>
+  </ul>
+
+  Alternatively, you can use <a href="{{ url_for('apidocs') }}">the API</a>.
+{% endblock %}
