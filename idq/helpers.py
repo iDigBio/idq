@@ -22,6 +22,21 @@ def flag_to_field(f):
     """
     return ":".join(f.split("_")[:-1])
 
+def getfield(f, d, t="text"):
+    fl = f.lower()
+    if fl in d:
+        f = fl
+    if f in d and d[f] is not None:
+        if t == "list":
+            return [x.strip() for x in d[f]]
+        else:
+            if isinstance(d[f], str) or isinstance(d[f], unicode):
+                return d[f].strip()
+            else:
+                return d[f]
+    else:
+        return None
+
 class WorkflowBase(object):
     """
         A base class to derive all workflows from.

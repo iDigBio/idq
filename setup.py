@@ -11,7 +11,7 @@ def read(*paths):
 
 setup(
     name='idq',
-    version='0.1.0',
+    version='0.3.0',
     description='iDigQuality Base Module',
     long_description=read('README.rst') + "\n\n",
     url='http://github.com/idigbio/idq/',   
