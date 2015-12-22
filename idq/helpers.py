@@ -22,7 +22,7 @@ def flag_to_field(f):
     """
     return ":".join(f.split("_")[:-1])
 
-class WorkflowBase:
+class WorkflowBase(object):
     """
         A base class to derive all workflows from.
     """
