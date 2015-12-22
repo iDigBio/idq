@@ -2,6 +2,13 @@ idq
 ===
 iDigQuality Base Module
 
+Production Setup
+================
+
+.. code-block::
+    
+    pip install idq
+
 Development Setup
 =================
 

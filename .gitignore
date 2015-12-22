@@ -1,1 +1,4 @@
 *.pyc
+build
+dist
+idq.egg-info
