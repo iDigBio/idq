@@ -79,7 +79,7 @@ class CombinedWorkflow(WorkflowBase):
         """
             Process all the workflows together.
         """
-        r = super(Workflow,self).process(d)
+        r = super(CombinedWorkflow,self).process(d)
 
         # Update is shallow, so it won't merge the flag lists
         # This might need custom merge code if you have lots of lists in our data
