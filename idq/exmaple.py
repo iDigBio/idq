@@ -32,3 +32,13 @@ class Workflow:
                 d["flags"].append(flag_prefix + "_blank")
 
         return d
+
+def main():
+    from . import create_harness
+    w = Workflow()
+    app = create_harness(w)
+    app.debug = True
+    app.run()
+
+if __name__ == '__main__':
+    main()        

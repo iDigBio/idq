@@ -12,6 +12,7 @@ import random
 
 def create_harness(w):
     app = Flask(__name__)
+    app.secret_key = "idq_harness"
     Bootstrap(app)
 
     nav = Nav()
@@ -103,14 +104,3 @@ def create_harness(w):
             return render_template("single.html", form=form, output=json.dumps(output, indent=2).strip())
 
     return app
-
-def main():
-    from exmaple import Workflow
-    w = Workflow()
-    app = create_harness(w)
-    app.secret_key = "idq_harness_exmaple"
-    app.debug = True
-    app.run()
-
-if __name__ == '__main__':
-    main()
