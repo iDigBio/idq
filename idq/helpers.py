@@ -84,7 +84,7 @@ class CombinedWorkflow(WorkflowBase):
         # Update is shallow, so it won't merge the flag lists
         # This might need custom merge code if you have lots of lists in our data
         flags = set()
-        for w in workflows:
+        for w in self._workflows:
             rt = w.process(d)
             flags.union(rt["flags"])
             r.update(rt)
