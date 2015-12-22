@@ -1,41 +1,102 @@
 {% extends "base.html" %}
-
 {% block content %}
-    When using the harness as a JSON API, all requests must specify the Content-Type headers as 'application/json'. It is also possible to script the normal form endpoints, but the response will be HTML, so this is not recommended.<br>
-    <br>
-    Single Endpoint Usage:<br>
-        Curl:<br>
-            <code>
-            curl -X POST http://localhost:5000/single -d '{"dwc:decimalLongitude": 5, "dwc:decimalLatitude": 6}' -H "Content-Type: application/json"
-            </code><br>
-            <code>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>API Documentation</h2>
+                <p>
+                When using the harness as a JSON API, all requests must specify the Content-Type headers as 'application/json'. It is also possible to script the normal form endpoints, but the response will be HTML, so this is not recommended.<br>
+                </p>
+                <h3>Parameters</h3>
+                <h4>Input parameters</h4>
+                <ul>
+                    {% for f in req_fields %}
+                        <li>{{ f }}</li>
+                    {% endfor %}
+                </ul>
+                <h4>Output parameters</h4>
+                <ul>
+                    {% for f in output_fields %}
+                        <li>{{ f }}</li>
+                    {% endfor %}
+                </ul>
+                <h4>Flags</h4>
+                <ul>
+                    {% for f in flags %}
+                        <li>{{ f }}</li>
+                    {% endfor %}
+                </ul>
+                <h3>Usage Information</h3>
+                <dl>
+                    <dt>
+                        Single Endpoint Usage:
+                    </dt>
+                    <dd>
+                        <pre>
+curl -X POST http://localhost:5000/single -H "Content-Type: application/json" -d '{
+    {% for f in req_fields -%}
+    "{{ f }}": "{{ numbers[loop.index-1] }}"{% if loop.index < req_fields|length -%},
+    {% else %}
+{% endif -%}
+{% endfor -%}
+}'
+                        </pre><br>
+                        <pre>
 {
-  "dwc:decimalLatitude": 6.0, 
-  "dwc:decimalLongitude": 5.0, 
-  "flags": []
+    {% for f in req_fields -%}
+    "{{ f }}": {{ numbers[loop.index-1] }},
+    {% endfor -%}
+    "flags": []
 }
-            </code><br>
-
-    <br>
-    Batch Endpoint Usage:<br>
-        Curl:<br>
-            <code>
-            curl -X POST http://localhost:5000/batch -d '{"items":[{"dwc:decimalLongitude": 5, "dwc:decimalLatitude": 6},{"dwc:decimalLatitude": 5.5,"dwc:decimalLongitude": 7.1}]}' -H "Content-Type: application/json"
-            </code><br>
-            <code>
+                        </pre>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        Batch Endpoint Usage:
+                    </dt>
+                    <dd>
+                        <pre>
+curl -X POST http://localhost:5000/single -H "Content-Type: application/json" -d '{
+    "items": [
+        {
+            {% for f in req_fields -%}
+            "{{ f }}": "{{ numbers[loop.index-1] }}"{% if loop.index < req_fields|length -%},
+            {% else %}
+        {% endif -%}
+            {% endfor -%}
+        },
+        {
+            {% for f in req_fields -%}
+            "{{ f }}": "{{ numbers[loop.index-1+req_fields|length] }}"{% if loop.index < req_fields|length -%},
+            {% else %}
+        {% endif -%}
+            {% endfor -%}
+        }
+    ]
+}'
+                        </pre><br>
+                        <pre>
 {
-  "items": [
-    {
-      "dwc:decimalLatitude": 6.0, 
-      "dwc:decimalLongitude": 5.0, 
-      "flags": []
-    }, 
-    {
-      "dwc:decimalLatitude": 5.5, 
-      "dwc:decimalLongitude": 7.1, 
-      "flags": []
-    }
-  ]
+    "items": [
+        {
+            {% for f in req_fields -%}
+            "{{ f }}": {{ numbers[loop.index-1] }},
+            {% endfor -%}
+            "flags": []
+        },
+        {
+            {% for f in req_fields -%}
+            "{{ f }}": {{ numbers[loop.index-1+req_fields|length] }},
+            {% endfor -%}
+            "flags": []
+        }
+    ]
 }
-            </code><br>
+                        </pre>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -8,11 +8,17 @@ class Workflow:
             "dwc:decimalLatitude",
             "dwc:decimalLongitude",
         ]
+        self.outputs = self.required_fields
+        self.flags = [
+            "{0}_error".format(f.replace(":","_")) for f in self.required_fields
+        ] + [
+            "{0}_blank".format(f.replace(":","_")) for f in self.required_fields
+        ]
 
     def process(self, d):
         if not "flags" in d:
             d["flags"] = []
-            
+
         for f in self.required_fields:
             flag_prefix = f.replace(":","_")
             if filled(f,d):

@@ -8,6 +8,7 @@ from wtforms.fields import StringField, SubmitField
 from wtforms.validators import Required, Email
 import json
 import unicodecsv
+import random
 
 def create_harness(w):
     app = Flask(__name__)
@@ -16,7 +17,7 @@ def create_harness(w):
     nav = Nav()
 
     nav.register_element('top', Navbar(
-        View('Home','home'),
+        View('iDigQuality','home'),
         View('Batch','batch'),
         View('Single','single'),
         View('API Documentation','apidocs'),
@@ -47,13 +48,14 @@ def create_harness(w):
 
     @app.route('/apidocs')
     def apidocs():
-        return render_template("apidocs.html")        
+        numbers = [random.randint(0,99)/10.0 for f in w.required_fields+w.required_fields]
+        return render_template("apidocs.html", numbers=numbers, req_fields=w.required_fields, output_fields=w.outputs, flags=w.flags)        
 
     @app.route('/batch', methods=('GET','POST'))
     def batch():
         form = BatchForm(csrf_enabled=False)
         output = None
-        json = False
+        use_json = False
 
         if request.method == "POST":
             j = request.get_json()
@@ -63,16 +65,15 @@ def create_harness(w):
                     r = unicodecsv.DictReader(form.csv.data)
                     for l in r:
                         output.append(w.process(l))
-                    output = json.dumps(output_lines, indent=2).strip()
                 else:
                     flash("CSV File Required.")
             else:
                 output = []
                 for d in j["items"]:
                     output.append(w.process(d))
-                json = True
+                use_json = True
 
-        if json:
+        if use_json:
             return jsonify({"items": output })
         else:
             return render_template("batch.html", form=form, req_fields=w.required_fields, output=json.dumps(output, indent=2).strip())
@@ -81,7 +82,7 @@ def create_harness(w):
     def single():
         form = SingleForm(csrf_enabled=False)
         output = None
-        json = False
+        use_json = False
 
         if request.method == "POST":
             d = request.get_json()
@@ -92,11 +93,11 @@ def create_harness(w):
                     if f_dict_name in w.required_fields:
                         d[f_dict_name] = form._fields[f].data
             else:
-                json = True
+                use_json = True
 
             output = w.process(d)
 
-        if json:
+        if use_json:
             return jsonify(output)
         else:
             return render_template("single.html", form=form, output=json.dumps(output, indent=2).strip())

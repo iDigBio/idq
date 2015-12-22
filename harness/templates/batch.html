@@ -1,10 +1,13 @@
 {% import "bootstrap/wtf.html" as wtf %}
 {% import "bootstrap/utils.html" as utils %}
-
 {% extends "base.html" %}
-
 {% block content %}
     <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Process Multiple Records</h2>
+            </div>
+        </div>
         {%- with messages = get_flashed_messages(with_categories=True) %}
             {%- if messages %}
                 <div class="row">
@@ -13,23 +16,29 @@
                     </div>
                 </div>
             {%- endif %}
-        {%- endwith %}    
-        <div class="col-md-12">
-            Required Fields:<br>
-            <ul>
-            {% for f in req_fields %}
-                <li>{{ f }}</li>
-            {% endfor %}
-            </ul>
+        {%- endwith %}
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Required Fields:</h3>
+                <ul>
+                {% for f in req_fields %}
+                    <li>{{ f }}</li>
+                {% endfor %}
+                </ul>
+            </div>
         </div>
-        <div class="col-md-12">
-            {{wtf.quick_form(form)}}
+        <div class="row">
+            <div class="col-md-12">
+                {{wtf.quick_form(form)}}
+            </div>
         </div>
-        <h3>Results:</h3>
-        <div class="col-md-12">
-            <code>
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Results:</h3>
+                <code>
 {{ output }}
-            </code>
-        </div>        
+                </code>
+            </div>
+        </div>
     </div>
 {% endblock %}
