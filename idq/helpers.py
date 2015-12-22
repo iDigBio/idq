@@ -87,5 +87,7 @@ class CombinedWorkflow(WorkflowBase):
         for w in self._workflows:
             rt = w.process(d)
             flags.union(rt["flags"])
+            del rt["flags"]
+            d.update(rt)
             r.update(rt)
         r["flags"] = list(flags)
