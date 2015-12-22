@@ -1,8 +1,20 @@
-from helpers import filled, field_to_flag
+"""
+    This file contains an example workflow class. It can also be run to start a harness server for that workflow.
+"""
 
-class Workflow:
+from helpers import filled, field_to_flag, WorkflowBase
+
+class Workflow(WorkflowBase):
+    """
+        An example of a possible data quality workflow class.
+
+        This simple class just converts text numbers in the dwc:decimalLatitude and dwc:decimalLongitude
+        fields to their numeric equivalents. It also sets flags if the the numbers are either blank, or there
+        is a conversion error.
+    """
 
     def __init__(self):
+        super(Workflow,self).__init__()
         self.required_fields = [
             "dwc:decimalLatitude",
             "dwc:decimalLongitude",
@@ -15,21 +27,20 @@ class Workflow:
         ]
 
     def process(self, d):
-        if not "flags" in d:
-            d["flags"] = []
+        r = super(Workflow,self).process(d)
 
         for f in self.required_fields:
             if filled(f,d):
                 try:
-                    d[f] = float(d[f])        
+                    r[f] = float(d[f])
                 except:
-                    d[f] = None
+                    r[f] = None
 
-                    d["flags"].append(field_to_flag(f,"error"))
+                    r["flags"].append(field_to_flag(f,"error"))
             else:
-                d["flags"].append(field_to_flag(f,"blank"))
+                r["flags"].append(field_to_flag(f,"blank"))
 
-        return d
+        return r
 
 def main():
     from harness import create_harness
