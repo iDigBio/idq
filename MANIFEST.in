@@ -1,0 +1,3 @@
+recursive-include idq/harness/static *
+recursive-include idq/harness/templates *.html
+include README.rst
