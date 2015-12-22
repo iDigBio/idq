@@ -1,5 +1,4 @@
-def filled(f,d):
-    return f in d and d[f] is not None and d[f] != ""
+from helpers import filled, field_to_flag
 
 class Workflow:
 
@@ -10,9 +9,9 @@ class Workflow:
         ]
         self.outputs = self.required_fields
         self.flags = [
-            "{0}_error".format(f.replace(":","_")) for f in self.required_fields
+            field_to_flag(f,"error") for f in self.required_fields
         ] + [
-            "{0}_blank".format(f.replace(":","_")) for f in self.required_fields
+            field_to_flag(f,"blank") for f in self.required_fields
         ]
 
     def process(self, d):
@@ -20,21 +19,20 @@ class Workflow:
             d["flags"] = []
 
         for f in self.required_fields:
-            flag_prefix = f.replace(":","_")
             if filled(f,d):
                 try:
                     d[f] = float(d[f])        
                 except:
                     d[f] = None
 
-                    d["flags"].append(flag_prefix + "_error")
+                    d["flags"].append(field_to_flag(f,"error"))
             else:
-                d["flags"].append(flag_prefix + "_blank")
+                d["flags"].append(field_to_flag(f,"blank"))
 
         return d
 
 def main():
-    from . import create_harness
+    from harness import create_harness
     w = Workflow()
     app = create_harness(w)
     app.debug = True

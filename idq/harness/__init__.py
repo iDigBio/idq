@@ -31,7 +31,7 @@ def create_harness(w):
 
     for f in w.required_fields:
         f_name = f.replace(":","_")
-        setattr(SingleForm,f_name,StringField(f_name))
+        setattr(SingleForm,f_name,StringField(f))
 
     setattr(SingleForm,"submit",SubmitField(u'Process'))
 
