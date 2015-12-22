@@ -91,3 +91,4 @@ class CombinedWorkflow(WorkflowBase):
             d.update(rt)
             r.update(rt)
         r["flags"] = list(flags)
+        return r
